@@ -1,0 +1,24 @@
+name: Experimento
+description: Registro de un experimento o prueba (cuaderno de laboratorio)
+labels: ["tipo: experimento"]
+body:
+  - type: textarea
+    id: hipotesis
+    attributes:
+      label: Hipótesis / pregunta
+    validations:
+      required: true
+  - type: textarea
+    id: metodo
+    attributes:
+      label: Método
+      description: Datos, configuración, commit, semilla… lo necesario para repetirlo.
+  - type: textarea
+    id: resultado
+    attributes:
+      label: Resultado
+      description: Cifras, figuras (arrastra imágenes aquí) y enlaces a los ficheros.
+  - type: textarea
+    id: conclusion
+    attributes:
+      label: Conclusión y siguiente paso

@@ -1,0 +1,38 @@
+% Estilo común de las presentaciones. Los datos (título, autor…) salen
+% de ../memoria/config/datos.tex, igual que en la memoria.
+\input{../memoria/config/datos}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish, es-tabla, es-noshorthands]{babel}
+\usepackage{etoolbox}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\sisetup{output-decimal-marker={,}}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning}
+
+% Reutiliza las figuras de la memoria sin duplicarlas
+\graphicspath{{../memoria/}{../memoria/figuras/}}
+
+% metropolis usa Fira con XeLaTeX/LuaLaTeX; con pdflatex cae a la fuente
+% por defecto sin problema, así que se silencia ese aviso.
+\usepackage{silence}
+\WarningFilter{beamerthememetropolis}{You need to compile with XeLaTeX}
+\usetheme{metropolis}
+\metroset{progressbar=frametitle, numbering=fraction, block=fill}
+\definecolor{acento}{HTML}{1E3A5F}
+\setbeamercolor{frametitle}{bg=acento}
+\setbeamercolor{progress bar}{fg=acento!60}
+\setbeamercolor{alerted text}{fg=acento!80!red}
+
+\title{\Titulo}
+\author{\texorpdfstring{\Autor\\{\small Director: \Director\ifdefempty{\Codirector}{}{ · Codirector: \Codirector}}}{\Autor}}
+\institute{\footnotesize \TipoTrabajo · \Titulacion\\\Escuela · \Universidad}
+% Logo en la esquina de la portada (con tikz para no descuadrar la página)
+\usetikzlibrary{calc}
+\addtobeamertemplate{title page}{}{%
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[anchor=north east] at ($(current page.north east)+(-0.5,-0.4)$)
+      {\includegraphics[height=1.1cm]{\LogoUniversidad}};
+  \end{tikzpicture}}

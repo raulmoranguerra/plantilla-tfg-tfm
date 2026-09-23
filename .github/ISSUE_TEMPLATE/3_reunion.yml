@@ -1,0 +1,32 @@
+name: Acta de reunión
+description: Resumen de una reunión con el director (decisiones y siguientes pasos)
+title: "Reunión AAAA-MM-DD"
+labels: ["tipo: reunión"]
+body:
+  - type: input
+    id: fecha
+    attributes:
+      label: Fecha
+      placeholder: AAAA-MM-DD
+    validations:
+      required: true
+  - type: textarea
+    id: temas
+    attributes:
+      label: Temas tratados
+  - type: textarea
+    id: decisiones
+    attributes:
+      label: Decisiones
+      description: Lo acordado. Sirve de registro si luego hay dudas.
+  - type: textarea
+    id: acciones
+    attributes:
+      label: Próximos pasos
+      description: Crea un issue por cada acción y enlázalo aquí (#número).
+      value: |
+        - [ ] 
+  - type: input
+    id: siguiente
+    attributes:
+      label: Próxima reunión

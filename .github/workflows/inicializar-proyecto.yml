@@ -1,0 +1,54 @@
+# Se ejecuta UNA VEZ al crear el repositorio del alumno (pestaña Actions →
+# "Inicializar proyecto" → Run workflow). Crea etiquetas, hitos con fechas
+# e issues iniciales a partir de .github/proyecto/plan.yml. Es seguro
+# volver a ejecutarlo (p. ej. para mover las fechas de los hitos).
+name: Inicializar proyecto
+
+on:
+  workflow_dispatch:
+    inputs:
+      inicio:
+        description: "Fecha de inicio (AAAA-MM-DD)"
+        required: true
+      semanas:
+        description: "Semanas hasta la defensa (TFG ≈ 36, TFM ≈ 24)"
+        required: true
+        default: "36"
+      tablero:
+        description: "Crear tablero en GitHub Projects (requiere el secreto PROYECTO_TOKEN)"
+        type: boolean
+        default: true
+      solo_hitos:
+        description: "Crear solo etiquetas e hitos (sin issues)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  inicializar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install --quiet pyyaml
+      - name: Crear etiquetas, hitos, issues y tablero
+        env:
+          # GitHub Projects no admite el token por defecto de Actions: hace
+          # falta un token personal (ver docs/GUIA_ALUMNO.md, paso 5).
+          GH_TOKEN: ${{ inputs.tablero && secrets.PROYECTO_TOKEN || github.token }}
+          HAY_TOKEN: ${{ secrets.PROYECTO_TOKEN != '' }}
+          INICIO: ${{ inputs.inicio }}
+          SEMANAS: ${{ inputs.semanas }}
+          TABLERO: ${{ inputs.tablero }}
+          SOLO_HITOS: ${{ inputs.solo_hitos }}
+        shell: bash   # activa pipefail: si el script falla, falla el paso
+        run: |
+          ARGS=(--inicio "$INICIO" --semanas "$SEMANAS")
+          if [ "$SOLO_HITOS" = "true" ]; then ARGS+=(--sin-issues); fi
+          if [ "$TABLERO" = "true" ]; then
+            if [ "$HAY_TOKEN" = "true" ]; then ARGS+=(--tablero)
+            else echo "::warning::No existe el secreto PROYECTO_TOKEN: se omite el tablero."; fi
+          fi
+          python3 scripts/proyecto/inicializar.py "${ARGS[@]}" | tee -a "$GITHUB_STEP_SUMMARY"

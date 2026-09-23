@@ -1,0 +1,19 @@
+% !TeX root = ../main.tex
+% Lista de acrónimos (paquete acronym). En el texto:
+%   \ac{ODS}   -> primera vez "Objetivos de Desarrollo Sostenible (ODS)", luego "ODS"
+%   \acs{ODS}  -> siempre la sigla     \acl{ODS} -> siempre el nombre largo
+%   \acp{...}  -> plural (añade una "s"; si el plural es irregular usa \acs)
+% En títulos y pies de figura escribe la sigla como texto normal: si usas
+% \ac o \acs, la "primera aparición" ocurre en el índice.
+% Mantén la lista en orden alfabético. El argumento opcional de
+% \begin{acronym} es la sigla más larga (para alinear la columna).
+\cleardoublepage
+\chapter*{Lista de acrónimos}
+\addcontentsline{toc}{chapter}{Lista de acrónimos}
+\begin{acronym}[ODS]
+  \acro{CI}{integración continua (\textit{Continuous Integration})}
+  \acro{ODS}{Objetivos de Desarrollo Sostenible}
+  \acro{SI}{Sistema Internacional de Unidades}
+  \acro{TFG}{Trabajo Fin de Grado}
+  \acro{TFM}{Trabajo Fin de Máster}
+\end{acronym}

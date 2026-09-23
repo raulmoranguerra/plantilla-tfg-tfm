@@ -1,0 +1,26 @@
+% !TeX root = ../main.tex
+\chapter{Presupuesto}\label{anx:presupuesto}
+
+El presupuesto se desglosa en materiales, herramientas (amortización) y
+personal. Los importes se escriben con \verb|\qty{}{\euro}| o \verb|\EUR{}|
+para que el formato sea uniforme.
+
+\begin{table}[H]
+  \centering
+  \caption{Presupuesto total del proyecto.}
+  \label{tab:presupuesto}
+  \begin{tabular}{lS[table-format=5.2]}
+    \toprule
+    Concepto & {Importe (\euro)} \\
+    \midrule
+    Materiales                 &   350.00 \\
+    Herramientas (amortización) &   120.00 \\
+    Personal (\qty{300}{\hour} a \qty{30}{\euro\per\hour}) & 9000.00 \\
+    \midrule
+    Subtotal                   &  9470.00 \\
+    IVA (\qty{21}{\percent})   &  1988.70 \\
+    \midrule
+    \textbf{Total}             & 11458.70 \\
+    \bottomrule
+  \end{tabular}
+\end{table}

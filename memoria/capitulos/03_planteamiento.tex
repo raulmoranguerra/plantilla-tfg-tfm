@@ -1,0 +1,54 @@
+% !TeX root = ../main.tex
+\chapter{Planteamiento del problema}\label{cap:planteamiento}
+
+Define con precisión el problema, los requisitos y la solución propuesta
+a alto nivel, antes de entrar en detalles de implementación.
+
+\section{Requisitos}
+
+\begin{table}[H]
+  \centering
+  \caption{Requisitos del sistema.}
+  \label{tab:requisitos}
+  \begin{tabularx}{\linewidth}{llX}
+    \toprule
+    ID & Tipo & Descripción \\
+    \midrule
+    R1 & Funcional    & El sistema debe \ldots \\
+    R2 & No funcional & El tiempo de respuesta debe ser inferior a \qty{10}{\milli\second}. \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\section{Arquitectura propuesta}
+
+Los diagramas de bloques sencillos se pueden dibujar directamente con
+TikZ (\cref{fig:arquitectura}), de modo que el texto de la figura use la
+misma tipografía que la memoria.
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[
+      node distance=1.8cm,
+      bloque/.style={draw, rounded corners, minimum width=2.6cm,
+                     minimum height=1cm, fill=blue!8, align=center},
+      flecha/.style={-Stealth, thick}]
+    \node[bloque] (entrada) {Adquisición};
+    \node[bloque, right=of entrada] (proceso) {Procesado};
+    \node[bloque, right=of proceso] (salida) {Visualización};
+    \draw[flecha] (entrada) -- node[above]{\small datos} (proceso);
+    \draw[flecha] (proceso) -- node[above]{\small resultados} (salida);
+  \end{tikzpicture}
+  \caption{Arquitectura general de la solución.}
+  \label{fig:arquitectura}
+\end{figure}
+
+\section{Modelo matemático}
+
+Las ecuaciones se numeran y referencian igual que las figuras
+(\cref{ec:modelo}):
+\begin{equation}
+  \label{ec:modelo}
+  y(t) = y_0 \, e^{-t/\tau} + \int_0^t h(t-s)\, u(s) \dif s
+\end{equation}
+donde $\tau = \qty{2.5}{\second}$ es la constante de tiempo.

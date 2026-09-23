@@ -1,0 +1,29 @@
+name: Tarea
+description: Algo concreto que hay que hacer (redactar una sección, implementar algo…)
+labels: []
+body:
+  - type: textarea
+    id: descripcion
+    attributes:
+      label: Descripción
+      description: ¿Qué hay que hacer y por qué?
+    validations:
+      required: true
+  - type: textarea
+    id: criterio
+    attributes:
+      label: Criterio de terminado
+      description: ¿Cómo sabremos que está terminado? Mejor como lista de comprobación.
+      value: |
+        - [ ] 
+        - [ ] 
+  - type: dropdown
+    id: tipo
+    attributes:
+      label: Tipo
+      options: [memoria, desarrollo, experimento, administrativo, presentación]
+  - type: input
+    id: estimacion
+    attributes:
+      label: Estimación
+      placeholder: "p. ej. 2 días"

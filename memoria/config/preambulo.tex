@@ -1,0 +1,121 @@
+% =====================================================================
+%  PREÁMBULO — paquetes y configuración tipográfica
+%  Normalmente no hace falta tocar este fichero. Si añades un paquete,
+%  hazlo ANTES del bloque final (hyperref/cleveref deben ir los últimos).
+% =====================================================================
+
+% Evita que pdfTeX incruste rutas locales de los ficheros incluidos en el PDF
+\ifdefined\pdfsuppressptexinfo \pdfsuppressptexinfo=-1 \fi
+
+% --- Codificación, idioma y tipografía ---------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[english, spanish, es-tabla, es-noshorthands]{babel}  % el último idioma es el principal
+% Números romanos de la parte preliminar en minúscula normal (babel-spanish
+% los pone en versalitas, que no existen en negrita y generan avisos)
+\makeatletter\def\es@scroman#1{#1}\makeatother
+\usepackage{microtype}
+\usepackage{csquotes}
+\usepackage{etoolbox}
+
+% --- Página -----------------------------------------------------------
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, inner=3cm, outer=2.5cm,
+            headheight=15pt]{geometry}
+\usepackage{emptypage}          % páginas de relleno realmente en blanco
+\usepackage{fancyhdr}
+\raggedbottom
+
+% Desaconseja (sin prohibir) partir palabras al final de línea
+\hyphenpenalty=5000
+\exhyphenpenalty=5000
+
+% --- Matemáticas y unidades -------------------------------------------
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{siunitx}
+\sisetup{output-decimal-marker={,}, per-mode=symbol}
+\usepackage{eurosym}
+
+% --- Figuras, tablas y dibujos ----------------------------------------
+\usepackage{graphicx}
+\graphicspath{{figuras/}}
+\usepackage{float}
+\usepackage[labelfont=bf]{caption}
+\usepackage{subcaption}
+\usepackage{booktabs, tabularx, multirow}
+\usepackage[table]{xcolor}
+\usepackage{lscape}
+\usepackage{pdfpages}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, fit, calc, shapes.geometric, backgrounds}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{pgfgantt}
+
+% --- Código y algoritmos -----------------------------------------------
+\usepackage{listings}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\lstdefinestyle{memoria}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{codepurple},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    showstringspaces=false,
+    tabsize=4,
+    frame=single,
+    literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+             {ñ}{{\~n}}1 {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1
+             {Ú}{{\'U}}1 {Ñ}{{\~N}}1 {ü}{{\"u}}1
+}
+\lstset{style=memoria}
+\usepackage[ruled,vlined,linesnumbered,algochapter,spanish,onelanguage]{algorithm2e}
+\SetAlgorithmName{Algoritmo}{algoritmo}{Índice de algoritmos}
+
+% --- Anexos, acrónimos y bibliografía ------------------------------------
+\usepackage[titletoc,title]{appendix}
+\usepackage[printonlyused]{acronym}  % solo lista las siglas usadas
+\usepackage[backend=biber, style=numeric, sorting=none]{biblatex}
+\addbibresource{bibliografia/referencias.bib}
+
+% --- Nombres en español ------------------------------------------------
+\addto\captionsspanish{%
+  \renewcommand{\appendixname}{Anexo}%
+  \renewcommand{\lstlistingname}{Código}%
+  \renewcommand{\lstlistlistingname}{Índice de código}%
+  \renewcommand{\bibname}{Bibliografía}%
+}
+\renewcommand{\appendixtocname}{Anexos}
+\renewcommand{\appendixpagename}{Anexos}
+
+% --- Cabeceras y pies ----------------------------------------------------
+\fancyhf{}
+\fancyhead[LE]{\nouppercase{\slshape\leftmark}}
+\fancyhead[RO]{\nouppercase{\slshape\rightmark}}
+\fancyfoot[LE,RO]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+% Consejo: si un título no cabe en la cabecera, usa \chapter[corto]{largo}
+
+% --- Enlaces y referencias cruzadas (SIEMPRE AL FINAL) --------------------
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+  pdftitle={\Titulo},
+  pdfauthor={\Autor},
+  pdfsubject={\TipoTrabajo. \Titulacion},
+  pdfkeywords={\PalabrasClave},
+}
+\usepackage[spanish, noabbrev]{cleveref}
+\crefname{appendix}{anexo}{anexos}
+\Crefname{appendix}{Anexo}{Anexos}
+\crefname{lstlisting}{código}{códigos}
+\Crefname{lstlisting}{Código}{Códigos}
+\crefname{algocf}{algoritmo}{algoritmos}
+\Crefname{algocf}{Algoritmo}{Algoritmos}

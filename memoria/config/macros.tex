@@ -1,0 +1,37 @@
+% =====================================================================
+%  MACROS PROPIAS
+%  Añade aquí tus comandos (\newcommand) para no repetir notación.
+% =====================================================================
+
+% --- Resumen / Abstract ----------------------------------------------
+% Entorno para el "RESUMEN DEL PROYECTO" y el "ABSTRACT" que exige la
+% normativa. Las figuras que se incluyan dentro se numeran aparte (1, 2…)
+% y no aparecen en el índice de figuras.
+%   #1: título (RESUMEN DEL PROYECTO / ABSTRACT)
+\NewDocumentEnvironment{resumenproyecto}{m}{%
+  \cleardoublepage
+  \thispagestyle{plain}%
+  \setcounter{figure}{0}%
+  \renewcommand{\thefigure}{\arabic{figure}}%
+  \renewcommand{\theHfigure}{#1.\arabic{figure}}%
+  \captionsetup{list=false}%
+  \begin{center}\large\bfseries #1\end{center}
+  \vspace{1em}
+}{%
+  \setcounter{figure}{0}%
+  \clearpage
+}
+
+% Apartado numerado del resumen (1. Introducción, 2. Metodología…)
+\newcommand{\apartadoresumen}[1]{\par\medskip\noindent\textbf{#1}\par\smallskip\noindent}
+
+% --- Notas de trabajo ---------------------------------------------------
+% \pendiente{...} marca en rojo lo que falta por hacer. La CI cuenta
+% cuántos quedan en cada compilación, así que conviene usarlo.
+\newcommand{\pendiente}[1]{\textcolor{red}{\textbf{[PENDIENTE:} #1\textbf{]}}}
+% \nota{...} para comentarios del director o del alumno en los borradores
+\newcommand{\nota}[1]{\textcolor{blue}{\textit{[Nota: #1]}}}
+
+% --- Notación (ejemplos) ---------------------------------------------------
+\newcommand{\vect}[1]{\boldsymbol{#1}}
+\newcommand{\dif}{\mathop{}\!\mathrm{d}}

@@ -1,0 +1,131 @@
+# Compila la memoria y las presentaciones en cada push y pull request.
+#  - push a main       -> actualiza la release "borrador" con el último PDF
+#  - pull request      -> PDF con los cambios marcados + comentario con estadísticas
+#  - etiqueta v*       -> release con los PDF de entrega (v0.* = prerelease)
+name: Compilar
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+    paths-ignore: ["docs/**", "**/*.md", ".github/ISSUE_TEMPLATE/**", ".github/proyecto/**"]
+  pull_request:
+    paths-ignore: ["docs/**", "**/*.md", ".github/ISSUE_TEMPLATE/**", ".github/proyecto/**"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: compilar-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  compilar:
+    name: Memoria y presentaciones
+    runs-on: ubuntu-latest
+    # TeX Live completo: cualquier paquete que añada el alumno está disponible
+    container: texlive/texlive:latest
+    steps:
+      - name: Instalar git y make
+        run: |
+          apt-get update -qq
+          apt-get install -y -qq --no-install-recommends git make ca-certificates > /dev/null
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configurar git
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Compilar memoria
+        run: make memoria
+
+      - name: Mostrar errores de LaTeX
+        if: failure()
+        run: |
+          echo "::group::Errores (memoria/main.log)"
+          grep -n -A4 -E '^!|\.tex:[0-9]+:' memoria/main.log || tail -n 60 memoria/main.log
+          echo "::endgroup::"
+          echo "::error::La memoria no compila. Abre el paso 'Mostrar errores de LaTeX' para ver el fichero y la línea."
+
+      - name: Compilar presentaciones
+        run: make presentacion
+
+      - name: PDF de cambios respecto a la rama base (pull request)
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        run: make diff REV=origin/${{ github.base_ref }}
+
+      - name: PDF de cambios respecto a la versión etiquetada anterior
+        if: startsWith(github.ref, 'refs/tags/v')
+        continue-on-error: true
+        run: |
+          ANTERIOR=$(git describe --tags --abbrev=0 --match 'v*' "${GITHUB_REF_NAME}^" 2>/dev/null || true)
+          if [ -n "$ANTERIOR" ]; then make diff REV="$ANTERIOR"; fi
+
+      - name: Estadísticas
+        run: |
+          scripts/estadisticas.sh > estadisticas.md
+          { echo "## 📄 Estado de la memoria"; echo; cat estadisticas.md; } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Preparar entregables
+        run: make entregables
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pdf
+          path: dist/
+          retention-days: 30
+
+      - name: Comentar en el pull request
+        if: github.event_name == 'pull_request'
+        continue-on-error: true   # en PR desde forks el token es de solo lectura
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const marca = '<!-- compilar-bot -->';
+            const run = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const body = `${marca}\n### 📄 Memoria compilada\n\n${fs.readFileSync('estadisticas.md', 'utf8')}\n` +
+              `Descarga los PDF (memoria, presentaciones y **PDF con los cambios marcados**) en los ` +
+              `[artefactos de la ejecución](${run}#artifacts).`;
+            const { data: comentarios } = await github.rest.issues.listComments({
+              ...context.repo, issue_number: context.issue.number });
+            const previo = comentarios.find(c => c.body.includes(marca));
+            if (previo) {
+              await github.rest.issues.updateComment({ ...context.repo, comment_id: previo.id, body });
+            } else {
+              await github.rest.issues.createComment({ ...context.repo, issue_number: context.issue.number, body });
+            }
+
+  publicar:
+    name: Publicar PDF
+    needs: compilar
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: pdf
+          path: dist
+
+      - name: Release de la versión etiquetada
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          PRE=""
+          if [[ "$GITHUB_REF_NAME" == v0* ]]; then PRE="--prerelease"; fi
+          gh release create "$GITHUB_REF_NAME" dist/*.pdf --repo "$GITHUB_REPOSITORY" \
+            --title "$GITHUB_REF_NAME" --generate-notes $PRE
+
+      - name: Release "borrador" con el último PDF de main
+        if: github.ref == 'refs/heads/main'
+        run: |
+          gh release delete borrador --repo "$GITHUB_REPOSITORY" --cleanup-tag --yes 2>/dev/null || true
+          gh release create borrador dist/*.pdf --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
+            --prerelease --title "Borrador (última versión de main)" \
+            --notes "PDF compilado automáticamente a partir del commit ${GITHUB_SHA::7} el $(date -u '+%d/%m/%Y %H:%M') UTC."

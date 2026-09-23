@@ -1,0 +1,30 @@
+# Cada lunes abre un issue "Seguimiento semanal" con la actividad de la semana,
+# el progreso de los hitos y alertas, mencionando al director.
+# Configuración: Settings → Secrets and variables → Actions → Variables
+#   DIRECTOR_GITHUB = usuario de GitHub del director (sin @)
+#   INFORME_SEMANAL = false  para desactivarlo
+name: Informe semanal
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"   # lunes 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: read
+
+jobs:
+  informe:
+    if: vars.INFORME_SEMANAL != 'false'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Generar informe
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DIRECTOR: ${{ vars.DIRECTOR_GITHUB }}
+        run: python3 scripts/proyecto/informe_semanal.py

@@ -1,0 +1,18 @@
+name: Problema de compilación
+description: La memoria no compila o la CI falla
+labels: ["compilación"]
+body:
+  - type: input
+    id: ejecucion
+    attributes:
+      label: Enlace a la ejecución fallida de Actions (o «en local»)
+  - type: textarea
+    id: error
+    attributes:
+      label: Mensaje de error
+      description: Copia las líneas del paso «Mostrar errores de LaTeX» o del .log
+      render: text
+  - type: textarea
+    id: cambio
+    attributes:
+      label: Último cambio antes del error

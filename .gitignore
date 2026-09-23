@@ -1,0 +1,53 @@
+# --- LaTeX: ficheros auxiliares --------------------------------------------
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.lol
+*.lot
+*.loa
+*.out
+*.run.xml
+*.synctex.gz
+*.synctex(busy)
+*.toc
+*.nav
+*.snm
+*.vrb
+*.xdv
+*-SAVE-ERROR
+texput.log
+
+# --- PDF compilados: los genera la CI (ver pestaña Releases) ---------------
+# Las figuras en PDF (memoria/figuras/**) y el Anexo I firmado SÍ se versionan.
+/memoria/main.pdf
+/memoria/diff.*
+/presentacion/*.pdf
+/dist/
+/.diff-base/
+/estadisticas.md
+
+# --- Python -------------------------------------------------------------
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# --- Datos grandes (descárgalos con un script y documenta su origen/DOI) ---
+/datos/
+
+# --- Editores y sistema -------------------------------------------------
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.claude/settings.local.json
+*~
+*.swp

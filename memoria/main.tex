@@ -1,0 +1,68 @@
+% =====================================================================
+%  MEMORIA DEL TFG / TFM
+%  Compilar:  make memoria      (o: cd memoria && latexmk main.tex)
+%  Rellena primero config/datos.tex.
+% =====================================================================
+\documentclass[12pt, a4paper, twoside, openright]{book}
+
+\input{config/datos}
+\input{config/preambulo}
+\input{config/macros}
+
+% Para compilar solo algunos capítulos mientras escribes (más rápido):
+% \includeonly{capitulos/03_planteamiento}
+
+\begin{document}
+
+% ---------------------------------------------------------------------
+%  PARTE PRELIMINAR
+% ---------------------------------------------------------------------
+\frontmatter
+\pagestyle{empty}
+
+\input{preliminares/portada}
+\portada
+\ifAnexoI
+  \includepdf[pages=-]{\RutaAnexoI}
+  \cleardoublepage
+  \portada
+\fi
+
+\pagestyle{plain}
+\input{preliminares/agradecimientos}
+\input{preliminares/resumen}
+\input{preliminares/abstract}
+
+\cleardoublepage
+\tableofcontents
+\listoffigures
+\listoftables
+\lstlistoflistings
+\input{preliminares/acronimos}
+
+% ---------------------------------------------------------------------
+%  CUERPO
+% ---------------------------------------------------------------------
+\mainmatter
+\pagestyle{fancy}
+
+\include{capitulos/01_introduccion}
+\include{capitulos/02_estado_del_arte}
+\include{capitulos/03_planteamiento}
+\include{capitulos/04_desarrollo}
+\include{capitulos/05_resultados}
+\include{capitulos/06_conclusiones}
+
+% ---------------------------------------------------------------------
+%  BIBLIOGRAFÍA Y ANEXOS
+% ---------------------------------------------------------------------
+\cleardoublepage
+\printbibliography[heading=bibintoc]
+
+\begin{appendices}
+\include{anexos/A_presupuesto}
+\include{anexos/B_ods}
+\include{anexos/C_codigo}
+\end{appendices}
+
+\end{document}

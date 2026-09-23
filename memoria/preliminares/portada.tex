@@ -1,0 +1,28 @@
+% !TeX root = ../main.tex
+% Portada. Se define como comando porque, si se incluye el Anexo I
+% firmado, la normativa exige que aparezca dos veces (antes y después).
+% Los textos salen de config/datos.tex: no hace falta editar este fichero.
+\newcommand{\portada}{%
+\begin{titlepage}
+  \centering
+  \includegraphics[width=0.3\linewidth]{\LogoUniversidad}\par
+  \vspace{1.5em}
+  {\large \Escuela\par}
+  \vspace{2.5em}
+  {\Large \Titulacion\par}
+  \vspace{2em}
+  {\Large \TipoTrabajo\par}
+  \vspace{2.5em}
+  {\LARGE\bfseries \Titulo\par}
+  \vfill
+  {\large Autor:\par \Autor\par}
+  \vspace{1em}
+  {\large Director:\par \Director\par}
+  \ifdefempty{\Codirector}{}{%
+    \vspace{1em}
+    {\large Codirector:\par \Codirector\par}}
+  \vfill
+  {\large \Lugar\par \FechaEntrega\par}
+\end{titlepage}%
+\cleardoublepage
+}

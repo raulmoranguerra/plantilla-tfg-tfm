@@ -1,0 +1,38 @@
+% !TeX root = ../main.tex
+\chapter{Estado del arte}\label{cap:estado-arte}
+
+Revisa críticamente lo que ya existe: no basta con enumerar trabajos,
+hay que compararlos y detectar el hueco que cubre este proyecto.
+
+\section{Cómo citar}
+
+Las referencias se guardan en \texttt{bibliografia/referencias.bib} y se
+citan con \verb|\cite{clave}|: por ejemplo, la tipografía de este documento
+se basa en \TeX{}~\cite{Knuth1984TeXbook} y \LaTeX{}~\cite{Lamport1994LaTeX}.
+Se pueden citar varias a la vez~\cite{Knuth1984TeXbook, Lamport1994LaTeX}.
+Usa claves del tipo \texttt{AutorAñoTema} e incluye siempre el DOI cuando
+exista.
+
+\section{Comparativa}
+
+Una tabla comparativa suele ser la forma más clara de cerrar el capítulo
+(\cref{tab:comparativa}).
+
+\begin{table}[H]
+  \centering
+  \caption{Comparativa de soluciones existentes.}
+  \label{tab:comparativa}
+  \begin{tabular}{lccc}
+    \toprule
+    Solución & Coste & Precisión & Disponibilidad \\
+    \midrule
+    Alternativa A & Alto  & Alta  & Comercial \\
+    Alternativa B & Bajo  & Media & Abierta   \\
+    \textbf{Este trabajo} & \textbf{Bajo} & \textbf{Alta} & \textbf{Abierta} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{Posicionamiento del trabajo}
+
+Explica qué aporta este trabajo respecto a lo revisado.

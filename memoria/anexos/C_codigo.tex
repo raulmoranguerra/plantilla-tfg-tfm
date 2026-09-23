@@ -1,0 +1,13 @@
+% !TeX root = ../main.tex
+\chapter{Código y reproducibilidad}\label{anx:codigo}
+
+Indica dónde está el código (repositorio y versión etiquetada), cómo se
+instala y cómo se reproducen los resultados del \cref{cap:resultados}:
+versiones, datos (con su DOI), semillas y comandos exactos.
+
+\begin{lstlisting}[language=bash, caption={Reproducción de las figuras de la memoria.}, label={lst:reproducir}]
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r scripts/requirements.txt
+make figuras
+make memoria
+\end{lstlisting}

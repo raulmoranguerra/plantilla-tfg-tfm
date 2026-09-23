@@ -1,0 +1,31 @@
+% !TeX root = ../main.tex
+\chapter{Resultados}\label{cap:resultados}
+
+Empieza describiendo el protocolo experimental (datos, métricas,
+semillas…) para que los resultados sean reproducibles.
+
+\section{Protocolo experimental}
+
+\section{Resultados principales}
+
+Las figuras con datos se generan con los scripts de
+\texttt{scripts/figuras/} (\cref{fig:ejemplo}): nunca a mano ni como
+capturas de pantalla. Así usan la misma tipografía que la memoria, llevan
+coma decimal y se pueden regenerar si cambian los datos.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\linewidth]{generadas/ejemplo_curva}
+  \caption{Figura de ejemplo generada con \texttt{scripts/figuras/ejemplo\_curva.py}.}
+  \label{fig:ejemplo}
+\end{figure}
+
+Las tablas de resultados también pueden generarse desde el código
+(\cref{tab:ejemplo}), lo que evita errores al copiar cifras a mano.
+
+\input{tablas/generadas/ejemplo_tabla}
+
+\section{Discusión}
+
+Interpreta los resultados: qué significan, por qué salen así y qué
+limitaciones tienen.

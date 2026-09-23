@@ -1,0 +1,229 @@
+# Plan de proyecto por defecto de un TFG/TFM.
+# Lo lee scripts/proyecto/inicializar.py (workflow "Inicializar proyecto")
+# para crear etiquetas, hitos (milestones) e issues en GitHub.
+#
+# Los hitos no llevan fecha fija: "fraccion" es la posición del hito dentro
+# de la duración total (0 = inicio, 1 = defensa). La fecha real se calcula
+# con la fecha de inicio y la duración en semanas que se indiquen al
+# ejecutar el workflow. El director puede adaptar este fichero en SU copia
+# de la plantilla antes de que los alumnos la usen.
+
+etiquetas:
+  - {nombre: "tipo: memoria",        color: "1d76db", descripcion: "Redacción de la memoria"}
+  - {nombre: "tipo: desarrollo",     color: "0e8a16", descripcion: "Código, hardware, modelos, simulaciones…"}
+  - {nombre: "tipo: experimento",    color: "5319e7", descripcion: "Prueba o experimento con hipótesis y resultado"}
+  - {nombre: "tipo: administrativo", color: "c5def5", descripcion: "Trámites: propuesta, Anexo I, depósito…"}
+  - {nombre: "tipo: reunión",        color: "fbca04", descripcion: "Acta de reunión con el director"}
+  - {nombre: "tipo: presentación",   color: "d4c5f9", descripcion: "Presentaciones de seguimiento y defensa"}
+  - {nombre: "bloqueo",              color: "b60205", descripcion: "Impide avanzar: necesita ayuda del director"}
+  - {nombre: "duda",                 color: "d876e3", descripcion: "Pregunta para el director"}
+  - {nombre: "revisión director",    color: "e99695", descripcion: "Listo para que lo revise el director"}
+  - {nombre: "cambios pedidos",      color: "f9d0c4", descripcion: "El director ha pedido cambios"}
+  - {nombre: "seguimiento",          color: "bfdadc", descripcion: "Informe semanal automático"}
+  - {nombre: "prioridad: alta",      color: "b60205", descripcion: ""}
+  - {nombre: "prioridad: media",     color: "fbca04", descripcion: ""}
+  - {nombre: "prioridad: baja",      color: "0e8a16", descripcion: ""}
+  - {nombre: "compilación",          color: "000000", descripcion: "Problemas al compilar la memoria o con la CI"}
+
+hitos:
+  - titulo: "H0 · Arranque"
+    fraccion: 0.05
+    descripcion: "Repositorio configurado, propuesta aprobada y objetivos acordados con el director."
+  - titulo: "H1 · Estado del arte y planteamiento"
+    fraccion: 0.28
+    descripcion: "Revisión bibliográfica cerrada, requisitos y solución propuesta definidos."
+  - titulo: "H2 · Presentación de seguimiento"
+    fraccion: 0.42
+    descripcion: "Revisión intermedia: trabajo hecho, resultados preliminares y replanificación."
+  - titulo: "H3 · Desarrollo"
+    fraccion: 0.62
+    descripcion: "Implementación principal terminada y documentada."
+  - titulo: "H4 · Resultados"
+    fraccion: 0.75
+    descripcion: "Experimentos ejecutados, figuras y tablas generadas desde el código."
+  - titulo: "H5 · Borrador completo"
+    fraccion: 0.83
+    descripcion: "Memoria completa enviada al director (etiqueta v0.9-borrador)."
+  - titulo: "H6 · Entrega"
+    fraccion: 0.92
+    descripcion: "Correcciones aplicadas y depósito de la memoria (etiqueta v1.0-entrega)."
+  - titulo: "H7 · Defensa"
+    fraccion: 1.0
+    descripcion: "Presentación final preparada y ensayada (etiqueta v1.1-defensa)."
+
+issues:
+  # ---------------- H0 · Arranque ----------------
+  - titulo: "Configurar el repositorio y rellenar memoria/config/datos.tex"
+    hito: "H0 · Arranque"
+    etiquetas: ["tipo: administrativo", "prioridad: alta"]
+    cuerpo: |
+      Sigue la [guía del alumno]({url_repo}/blob/main/docs/GUIA_ALUMNO.md).
+      - [ ] Repositorio creado desde la plantilla (privado)
+      - [ ] Director añadido como colaborador
+      - [ ] Rellenado `memoria/config/datos.tex` (título, autor, director, titulación…)
+      - [ ] Primera compilación correcta en GitHub Actions (✅ verde)
+      - [ ] Entorno local o Overleaf configurado
+  - titulo: "Reunión inicial: alcance, objetivos y calendario"
+    hito: "H0 · Arranque"
+    etiquetas: ["tipo: reunión"]
+    cuerpo: |
+      - [ ] Acordar el problema y el alcance
+      - [ ] Acordar la frecuencia de reuniones y el canal de comunicación
+      - [ ] Revisar y ajustar las fechas de los hitos
+      - [ ] Levantar acta (plantilla de issue "Acta de reunión")
+  - titulo: "Propuesta / Anexo I: redactar, firmar y subir"
+    hito: "H0 · Arranque"
+    etiquetas: ["tipo: administrativo", "prioridad: alta"]
+    cuerpo: |
+      - [ ] Descargar el formulario vigente de la escuela
+      - [ ] Rellenar título, curso académico y declaración de uso de IA
+      - [ ] Firma del alumno y autorización del director
+      - [ ] Guardar como `memoria/administrativo/AnexoI_firmado.pdf` y activar `\AnexoItrue` en `datos.tex`
+  - titulo: "Redactar objetivos (sección 1.2)"
+    hito: "H0 · Arranque"
+    etiquetas: ["tipo: memoria"]
+    cuerpo: |
+      Objetivos concretos, medibles y verificables. Serán la vara de medir en las conclusiones.
+
+  # ---------------- H1 · Estado del arte ----------------
+  - titulo: "Búsqueda bibliográfica y gestor de referencias"
+    hito: "H1 · Estado del arte y planteamiento"
+    etiquetas: ["tipo: memoria"]
+    cuerpo: |
+      - [ ] Configurar Zotero (+ Better BibTeX) u otro gestor
+      - [ ] Al menos 15-20 referencias relevantes con DOI en `referencias.bib`
+      - [ ] Fichas de lectura de los trabajos clave
+  - titulo: "Capítulo 2 · Estado del arte"
+    hito: "H1 · Estado del arte y planteamiento"
+    etiquetas: ["tipo: memoria"]
+    cuerpo: |
+      - [ ] Estructura de secciones acordada con el director
+      - [ ] Tabla comparativa de soluciones
+      - [ ] Posicionamiento del trabajo
+      - [ ] Pull request abierto para revisión
+  - titulo: "Capítulo 3 · Planteamiento: requisitos y arquitectura"
+    hito: "H1 · Estado del arte y planteamiento"
+    etiquetas: ["tipo: memoria", "tipo: desarrollo"]
+    cuerpo: |
+      - [ ] Requisitos funcionales y no funcionales
+      - [ ] Arquitectura de la solución (diagrama)
+      - [ ] Alternativas consideradas y justificación
+  - titulo: "Capítulo 1 · Introducción (primera versión)"
+    hito: "H1 · Estado del arte y planteamiento"
+    etiquetas: ["tipo: memoria"]
+    cuerpo: |
+      - [ ] Contexto y motivación
+      - [ ] Planificación (Gantt) coherente con los hitos del repositorio
+      - [ ] Alineación con los ODS (resumen)
+
+  # ---------------- H2 · Seguimiento ----------------
+  - titulo: "Preparar presentación de seguimiento"
+    hito: "H2 · Presentación de seguimiento"
+    etiquetas: ["tipo: presentación", "prioridad: alta"]
+    cuerpo: |
+      - [ ] `presentacion/seguimiento.tex` actualizado
+      - [ ] Ensayo con el director
+      - [ ] Etiquetar la versión: `git tag v0.3-seguimiento && git push --tags`
+
+  # ---------------- H3 · Desarrollo ----------------
+  - titulo: "Desarrollo · bloque 1"
+    hito: "H3 · Desarrollo"
+    etiquetas: ["tipo: desarrollo"]
+    cuerpo: |
+      Divide el desarrollo en bloques de 1-2 semanas y crea un issue por bloque.
+      Enlaza aquí los commits y pull requests.
+  - titulo: "Desarrollo · bloque 2"
+    hito: "H3 · Desarrollo"
+    etiquetas: ["tipo: desarrollo"]
+    cuerpo: "Ídem."
+  - titulo: "Capítulo 4 · Desarrollo"
+    hito: "H3 · Desarrollo"
+    etiquetas: ["tipo: memoria"]
+    cuerpo: |
+      Escribe mientras desarrollas, no al final.
+      - [ ] Decisiones de diseño justificadas
+      - [ ] Fragmentos de código/algoritmos imprescindibles
+      - [ ] Pull request abierto para revisión
+
+  # ---------------- H4 · Resultados ----------------
+  - titulo: "Diseñar el protocolo experimental"
+    hito: "H4 · Resultados"
+    etiquetas: ["tipo: experimento"]
+    cuerpo: |
+      - [ ] Métricas y casos de prueba
+      - [ ] Datos, semillas y versiones fijadas (reproducibilidad)
+  - titulo: "Generar figuras y tablas desde scripts"
+    hito: "H4 · Resultados"
+    etiquetas: ["tipo: desarrollo", "tipo: memoria"]
+    cuerpo: |
+      - [ ] Un script por figura en `scripts/figuras/` usando `estilo.py`
+      - [ ] `make figuras` regenera todo sin pasos manuales
+  - titulo: "Capítulo 5 · Resultados y discusión"
+    hito: "H4 · Resultados"
+    etiquetas: ["tipo: memoria"]
+    cuerpo: |
+      - [ ] Protocolo experimental
+      - [ ] Resultados principales con cifras concretas
+      - [ ] Discusión y limitaciones
+
+  # ---------------- H5 · Borrador ----------------
+  - titulo: "Capítulo 6 · Conclusiones y trabajo futuro"
+    hito: "H5 · Borrador completo"
+    etiquetas: ["tipo: memoria"]
+    cuerpo: |
+      - [ ] Tabla de cumplimiento de objetivos
+      - [ ] Líneas futuras concretas
+  - titulo: "Anexos: presupuesto y ODS"
+    hito: "H5 · Borrador completo"
+    etiquetas: ["tipo: memoria"]
+    cuerpo: |
+      - [ ] Presupuesto (materiales, amortización, personal, IVA)
+      - [ ] Alineación detallada con los ODS
+  - titulo: "Resumen del proyecto y abstract"
+    hito: "H5 · Borrador completo"
+    etiquetas: ["tipo: memoria", "prioridad: alta"]
+    cuerpo: |
+      Se escriben al final, cuando los resultados son definitivos.
+      - [ ] Resumen (4 apartados + palabras clave)
+      - [ ] Abstract (traducción revisada)
+  - titulo: "Enviar borrador completo al director (v0.9-borrador)"
+    hito: "H5 · Borrador completo"
+    etiquetas: ["revisión director", "prioridad: alta"]
+    cuerpo: |
+      - [ ] Sin `\pendiente{}` abiertos (ver el resumen de la CI)
+      - [ ] Sin referencias sin definir
+      - [ ] `git tag v0.9-borrador && git push --tags` → se publica el PDF en *Releases*
+
+  # ---------------- H6 · Entrega ----------------
+  - titulo: "Aplicar las correcciones del director"
+    hito: "H6 · Entrega"
+    etiquetas: ["tipo: memoria", "cambios pedidos"]
+    cuerpo: |
+      Un pull request por bloque de correcciones. La CI adjunta un PDF con los cambios marcados.
+  - titulo: "Revisión final: ortografía, formato y checklist de entrega"
+    hito: "H6 · Entrega"
+    etiquetas: ["tipo: memoria", "prioridad: alta"]
+    cuerpo: |
+      Ver [docs/ENTREGABLES.md]({url_repo}/blob/main/docs/ENTREGABLES.md).
+  - titulo: "Depósito de la memoria (v1.0-entrega)"
+    hito: "H6 · Entrega"
+    etiquetas: ["tipo: administrativo", "prioridad: alta"]
+    cuerpo: |
+      - [ ] `git tag v1.0-entrega && git push --tags`
+      - [ ] Descargar los PDF de *Releases* y subirlos a la plataforma de la escuela
+      - [ ] Resumen en texto plano para la plataforma
+
+  # ---------------- H7 · Defensa ----------------
+  - titulo: "Preparar la presentación de defensa"
+    hito: "H7 · Defensa"
+    etiquetas: ["tipo: presentación", "prioridad: alta"]
+    cuerpo: |
+      - [ ] `presentacion/defensa.tex` completo
+      - [ ] Notas del orador y tiempos
+      - [ ] Preguntas previsibles del tribunal
+  - titulo: "Ensayo de la defensa con el director"
+    hito: "H7 · Defensa"
+    etiquetas: ["tipo: reunión", "tipo: presentación"]
+    cuerpo: |
+      - [ ] Ensayo cronometrado
+      - [ ] Etiquetar la versión final: `v1.1-defensa`

@@ -1,0 +1,3 @@
+# Pide automáticamente la revisión del director en cada pull request.
+# Sustituye "usuario-director" por su usuario de GitHub y descomenta la línea:
+# * @usuario-director

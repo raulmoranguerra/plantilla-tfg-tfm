@@ -1,0 +1,16 @@
+// Entorno listo para compilar en GitHub Codespaces (o en VS Code con Docker):
+// Code → Codespaces → Create codespace on main. Incluye TeX Live completo.
+{
+  "name": "TFG/TFM LaTeX",
+  "image": "texlive/texlive:latest",
+  "postCreateCommand": "apt-get update -qq && apt-get install -y -qq git make python3-matplotlib python3-yaml > /dev/null",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "james-yu.latex-workshop",
+        "valentjn.vscode-ltex",
+        "ms-python.python"
+      ]
+    }
+  }
+}

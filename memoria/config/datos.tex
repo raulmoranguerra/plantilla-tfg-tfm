@@ -1,0 +1,46 @@
+% =====================================================================
+%  DATOS DEL TRABAJO
+%  Es el ÚNICO fichero que hay que editar al empezar. Todo lo demás
+%  (portada, metadatos del PDF, presentaciones, nombre de los
+%  entregables generados por la CI) se alimenta de estas macros.
+% =====================================================================
+
+% --- Tipo de trabajo -------------------------------------------------
+\newcommand{\TipoTrabajo}{Trabajo Fin de Grado}      % o: Trabajo Fin de Máster
+\newcommand{\TipoCorto}{TFG}                         % o: TFM
+\newcommand{\Titulacion}{Grado en Ingeniería en Tecnologías Industriales}
+
+% --- Título (español e inglés) ---------------------------------------
+\newcommand{\Titulo}{Título del trabajo en español}
+\newcommand{\TituloEN}{Project title in English}
+
+% --- Personas ---------------------------------------------------------
+\newcommand{\Autor}{Nombre Apellido1 Apellido2}
+\newcommand{\Director}{Nombre Apellido1 Apellido2}
+\newcommand{\Codirector}{}                           % dejar vacío si no hay
+
+% --- Institución ------------------------------------------------------
+\newcommand{\Universidad}{Universidad Pontificia Comillas}
+\newcommand{\Escuela}{Escuela Técnica Superior de Ingeniería (ICAI)}
+\newcommand{\LogoUniversidad}{figuras/logo_universidad}
+
+% --- Fechas -----------------------------------------------------------
+\newcommand{\Lugar}{Madrid}
+\newcommand{\FechaEntrega}{Junio 2027}
+\newcommand{\CursoAcademico}{2026-2027}
+
+% --- Palabras clave -----------------------------------------------------
+\newcommand{\PalabrasClave}{palabra 1, palabra 2, palabra 3, palabra 4}
+\newcommand{\Keywords}{keyword 1, keyword 2, keyword 3, keyword 4}
+
+% --- Entrega ----------------------------------------------------------
+% Nombre base de los PDF que publica la CI (sin espacios ni tildes).
+% Convención: <TIPO>_<Apellido1><Apellido2>_<Nombre>
+\newcommand{\NombreEntrega}{TFG_Apellido1Apellido2_Nombre}
+
+% Anexo I (declaración de originalidad, uso de IA y autorización del
+% director). La normativa exige: portada -> Anexo I firmado -> portada.
+% Poner \AnexoItrue cuando el PDF firmado esté en la ruta indicada.
+\newif\ifAnexoI
+\AnexoIfalse
+\newcommand{\RutaAnexoI}{administrativo/AnexoI_firmado.pdf}

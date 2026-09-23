@@ -1,0 +1,36 @@
+% !TeX root = ../main.tex
+% Este capítulo se puede dividir en varios (diseño hardware, software,
+% modelo…). Crea un fichero por capítulo y añádelo con \include en main.tex.
+\chapter{Desarrollo}\label{cap:desarrollo}
+
+Describe la implementación con el detalle suficiente para que otra
+persona pueda reproducirla, y justifica las decisiones de diseño.
+
+\section{Algoritmos}
+
+\begin{algorithm}[H]
+  \caption{Media móvil exponencial.}
+  \label{alg:ema}
+  \KwIn{señal $x_1,\dots,x_N$, factor $\alpha \in (0,1]$}
+  \KwOut{señal filtrada $y_1,\dots,y_N$}
+  $y_1 \gets x_1$\;
+  \For{$k \gets 2$ \KwTo $N$}{
+    $y_k \gets \alpha x_k + (1-\alpha)\, y_{k-1}$\;
+  }
+  \Return{$y$}
+\end{algorithm}
+
+\section{Código}
+
+Incluye solo los fragmentos imprescindibles (\cref{lst:ema}). El código
+completo debe estar en el repositorio y se referencia desde el
+\cref{anx:codigo}.
+
+\begin{lstlisting}[language=Python, caption={Implementación del \cref{alg:ema}.}, label={lst:ema}]
+def ema(x, alpha):
+    """Media móvil exponencial."""
+    y = [x[0]]
+    for xk in x[1:]:
+        y.append(alpha * xk + (1 - alpha) * y[-1])
+    return y
+\end{lstlisting}

@@ -1,0 +1,67 @@
+% !TeX root = ../main.tex
+\chapter{Introducción}\label{cap:introduccion}
+
+\section{Contexto y motivación}\label{sec:motivacion}
+
+Presenta el problema, por qué es relevante y a quién afecta. Termina con
+una o dos frases que expliquen qué aporta este trabajo.
+
+Los acrónimos se escriben con \verb|\ac{...}|: la primera aparición de
+\ac{ODS} se expande y las siguientes (\ac{ODS}) no.
+
+\section{Objetivos}\label{sec:objetivos}
+
+El objetivo general de este \ac{TFG} es \pendiente{redactar el objetivo general}.
+
+Los objetivos específicos son:
+\begin{enumerate}
+  \item \textbf{O1.} Objetivo medible y verificable.
+  \item \textbf{O2.} \ldots
+  \item \textbf{O3.} \ldots
+\end{enumerate}
+El \cref{cap:conclusiones} revisa el grado de cumplimiento de cada uno.
+
+\section{Metodología y planificación}\label{sec:planificacion}
+
+Describe cómo se ha organizado el trabajo. El diagrama de la
+\cref{fig:gantt} debe coincidir con los hitos (\textit{milestones}) del
+tablero del proyecto en GitHub.
+
+\begin{figure}[H]
+  \centering
+  \begin{ganttchart}[
+      hgrid, vgrid={*1{draw=black!10}},
+      x unit=0.3cm, y unit chart=0.6cm,
+      title label font=\tiny,
+      bar label font=\small,
+      milestone label font=\small\itshape,
+      bar/.append style={fill=blue!30},
+    ]{1}{36}
+    \gantttitle{Semanas}{36} \\
+    \gantttitlelist{1,...,36}{1} \\
+    \ganttbar{Arranque y propuesta}{1}{2} \\
+    \ganttbar{Estado del arte}{2}{9} \\
+    \ganttbar{Planteamiento}{6}{10} \\
+    \ganttbar{Desarrollo}{9}{20} \\
+    \ganttmilestone{Seguimiento}{15} \\
+    \ganttbar{Resultados}{18}{25} \\
+    \ganttbar{Redacción final}{22}{29} \\
+    \ganttbar{Revisión y entrega}{29}{33} \\
+    \ganttmilestone{Defensa}{36}
+  \end{ganttchart}
+  \caption{Planificación temporal del trabajo.}
+  \label{fig:gantt}
+\end{figure}
+
+\section{Alineación con los Objetivos de Desarrollo Sostenible}\label{sec:ods}
+
+Resume en un párrafo con qué \acs{ODS} se relaciona el trabajo. El
+análisis detallado va en el \cref{anx:ods}.
+
+\section{Estructura de la memoria}\label{sec:estructura}
+
+El \cref{cap:estado-arte} revisa el estado del arte. El
+\cref{cap:planteamiento} plantea el problema y la solución propuesta. El
+\cref{cap:desarrollo} describe el desarrollo y el \cref{cap:resultados}
+presenta los resultados. Por último, el \cref{cap:conclusiones} recoge las
+conclusiones y las líneas de trabajo futuro.

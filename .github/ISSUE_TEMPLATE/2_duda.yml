@@ -1,0 +1,23 @@
+name: Duda o bloqueo
+description: Pregunta para el director o algo que impide avanzar
+labels: ["duda"]
+body:
+  - type: markdown
+    attributes:
+      value: Explica el contexto para que el director pueda responder sin tener que preguntar más.
+  - type: textarea
+    id: pregunta
+    attributes:
+      label: Pregunta o problema
+    validations:
+      required: true
+  - type: textarea
+    id: intentado
+    attributes:
+      label: Qué he intentado / qué opciones veo
+  - type: checkboxes
+    id: bloqueo
+    attributes:
+      label: Urgencia
+      options:
+        - label: Me impide avanzar (añade la etiqueta «bloqueo»)
