@@ -31,7 +31,7 @@ jobs:
   inicializar:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - run: pip install --quiet pyyaml
       - name: Crear etiquetas, hitos, issues y tablero
         env:
