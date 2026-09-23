@@ -8,6 +8,10 @@
 # ejecutar el workflow. El director puede adaptar este fichero en SU copia
 # de la plantilla antes de que los alumnos la usen.
 
+# Usuario de GitHub del director (sin @). El informe semanal le menciona.
+# Se puede sobrescribir en cada repo con la variable de Actions DIRECTOR_GITHUB.
+director: "raulmoranguerra"
+
 etiquetas:
   - {nombre: "tipo: memoria",        color: "1d76db", descripcion: "Redacción de la memoria"}
   - {nombre: "tipo: desarrollo",     color: "0e8a16", descripcion: "Código, hardware, modelos, simulaciones…"}

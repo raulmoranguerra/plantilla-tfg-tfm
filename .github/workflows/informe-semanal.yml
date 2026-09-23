@@ -1,7 +1,8 @@
 # Cada lunes abre un issue "Seguimiento semanal" con la actividad de la semana,
 # el progreso de los hitos y alertas, mencionando al director.
-# Configuración: Settings → Secrets and variables → Actions → Variables
-#   DIRECTOR_GITHUB = usuario de GitHub del director (sin @)
+# El director se toma de `director:` en .github/proyecto/plan.yml.
+# Opcional (Settings → Secrets and variables → Actions → Variables):
+#   DIRECTOR_GITHUB = otro usuario de GitHub (sin @) para este repositorio
 #   INFORME_SEMANAL = false  para desactivarlo
 name: Informe semanal
 

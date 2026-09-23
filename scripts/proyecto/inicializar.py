@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
 """Crea en GitHub las etiquetas, hitos e issues de .github/proyecto/plan.yml
-y, opcionalmente, un tablero (GitHub Projects) con todos los issues.
+(el tablero de GitHub Projects lo crea el director con tablero.py).
 
 Es idempotente: se puede ejecutar varias veces sin duplicar nada (si un hito
 ya existe solo se actualiza su fecha; si un issue con el mismo título ya
 existe, no se vuelve a crear).
 
 Uso (normalmente desde el workflow "Inicializar proyecto"):
-    python3 scripts/proyecto/inicializar.py --inicio 2026-10-01 --semanas 36 [--tablero]
+    python3 scripts/proyecto/inicializar.py --inicio 2026-10-01 --semanas 36
 
-En local requiere `gh` autenticado (y `gh auth refresh -s project` para el
-tablero) y `pip install pyyaml`.
+En local requiere `gh` autenticado y `pip install pyyaml`.
 """
 
 from __future__ import annotations
@@ -90,38 +89,10 @@ def crear_issues(repo: str, issues: list[dict], asignado: str | None) -> list[st
     return urls
 
 
-def crear_tablero(repo: str, urls: list[str]) -> None:
-    print("== Tablero (GitHub Projects)")
-    propietario = repo.split("/")[0]
-    titulo = f"{repo.split('/')[1]} · seguimiento"
-    try:
-        proyectos = json.loads(gh("project", "list", "--owner", propietario,
-                                  "--format", "json", "--limit", "100"))["projects"]
-    except RuntimeError as e:
-        print(f"  ✗ No se puede acceder a GitHub Projects: {e}\n"
-              "    El token necesita el permiso 'project' (ver docs/GUIA_ALUMNO.md).")
-        return
-    proyecto = next((p for p in proyectos if p["title"] == titulo), None)
-    if proyecto is None:
-        proyecto = json.loads(gh("project", "create", "--owner", propietario,
-                                 "--title", titulo, "--format", "json"))
-        print(f"  ✓ Creado: {proyecto['url']}")
-    else:
-        print(f"  = Ya existe: {proyecto['url']}")
-    numero = str(proyecto["number"])
-    gh("project", "link", numero, "--owner", propietario, "--repo", repo, check=False)
-    for url in urls:
-        gh("project", "item-add", numero, "--owner", propietario, "--url", url, check=False)
-    print(f"  ✓ {len(urls)} issues añadidos al tablero")
-    print("  → Pasos manuales (1 min): en el tablero, añade una vista 'Board' agrupada por\n"
-          "    Status y otra 'Roadmap' por Milestone; y en Workflows activa 'Auto-add to project'.")
-
-
 def main() -> None:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--inicio", default=date.today().isoformat(), help="Fecha de inicio (AAAA-MM-DD)")
     p.add_argument("--semanas", type=int, default=36, help="Duración total hasta la defensa")
-    p.add_argument("--tablero", action="store_true", help="Crear también el tablero de GitHub Projects")
     p.add_argument("--sin-issues", action="store_true", help="Crear solo etiquetas e hitos")
     p.add_argument("--plan", default=str(RAIZ / ".github" / "proyecto" / "plan.yml"))
     a = p.parse_args()
@@ -135,9 +106,8 @@ def main() -> None:
 
     crear_etiquetas(repo, plan["etiquetas"])
     crear_hitos(repo, plan["hitos"], inicio, a.semanas)
-    urls = [] if a.sin_issues else crear_issues(repo, plan["issues"], repo.split("/")[0])
-    if a.tablero:
-        crear_tablero(repo, urls)
+    if not a.sin_issues:
+        crear_issues(repo, plan["issues"], repo.split("/")[0])
     print("\nListo. Revisa las fechas de los hitos en la pestaña Issues → Milestones.")
 
 

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Abre un issue "Seguimiento semanal" con la actividad de los últimos 7 días:
 commits, issues cerrados, pull requests pendientes, progreso de los hitos y
-alertas (inactividad, hitos vencidos, bloqueos). Menciona al director si
-está definida la variable DIRECTOR (usuario de GitHub, sin @).
+alertas (inactividad, hitos vencidos, bloqueos). Menciona al director: el
+de la variable DIRECTOR o, si no existe, el campo `director` de plan.yml.
 
 Lo ejecuta cada lunes el workflow "Informe semanal". En local:
     DIRECTOR=usuario python3 scripts/proyecto/informe_semanal.py --dry-run
@@ -13,8 +13,10 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import subprocess
 from datetime import date, datetime, timedelta, timezone
+from pathlib import Path
 
 
 def sh(*args: str) -> str:
@@ -24,6 +26,13 @@ def sh(*args: str) -> str:
 def gh_json(*args: str):
     r = subprocess.run(["gh", *args], capture_output=True, text=True)
     return json.loads(r.stdout or "[]") if r.returncode == 0 else []
+
+
+def director_por_defecto() -> str:
+    """Lee `director:` de .github/proyecto/plan.yml (sin depender de PyYAML)."""
+    plan = Path(__file__).resolve().parents[2] / ".github" / "proyecto" / "plan.yml"
+    m = re.search(r'^director:\s*"?([\w-]*)"?', plan.read_text(encoding="utf-8"), re.M) if plan.exists() else None
+    return m.group(1) if m else ""
 
 
 def barra(hechos: int, total: int, ancho: int = 10) -> str:
@@ -48,7 +57,7 @@ def main() -> None:
     hoy = date.today()
     desde = hoy - timedelta(days=a.dias)
     alumno = repo.split("/")[0]
-    director = os.environ.get("DIRECTOR", "").lstrip("@")
+    director = (os.environ.get("DIRECTOR") or director_por_defecto()).lstrip("@")
 
     # --- Actividad en git --------------------------------------------------
     commits = sh("git", "log", f"--since={desde.isoformat()}", "--no-merges",

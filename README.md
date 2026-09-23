@@ -19,7 +19,7 @@ Comillas)** y todo lo específico de la escuela está en un solo fichero.
 | 🎞️ **Presentaciones** | Beamer para el seguimiento y la defensa, con los mismos datos y figuras que la memoria. |
 | 📊 **Figuras desde código** | Estilo común de matplotlib (tipografía de la memoria y coma decimal) y tablas LaTeX generadas desde Python. |
 | ⚙️ **CI/CD** | Cada *push* compila en GitHub Actions. Cada PR recibe un **PDF con los cambios marcados** y un comentario con estadísticas. Cada etiqueta `v*` publica los PDF de entrega en *Releases*. |
-| 📋 **Gestión del proyecto** | Un workflow crea los hitos con fechas, las etiquetas, 24 issues iniciales y un tablero de GitHub Projects. Cada lunes se abre un **informe semanal** para el director. |
+| 📋 **Gestión del proyecto** | Con un comando (`make alta`), el director crea en el repositorio del alumno los hitos con fechas, las etiquetas y 24 issues iniciales, y un tablero de GitHub Projects compartido con él. `make seguimiento` muestra el estado de todos sus alumnos, y cada lunes se abre un **informe semanal** en cada repositorio. |
 | 🧰 **Entorno** | `Makefile`, `latexmk`, VS Code (LaTeX Workshop + corrector LTeX) y Codespaces con TeX Live preinstalado. |
 
 ## Uso rápido
@@ -31,6 +31,10 @@ make figuras      # regenera figuras y tablas desde scripts/figuras/
 make diff REV=v0.3-seguimiento   # PDF con los cambios desde esa versión
 make estadisticas # páginas, palabras, \pendiente{} abiertos…
 make limpiar
+
+# Director
+make alta REPO=alumno/repo INICIO=2026-10-01   # hitos, issues y tablero
+make seguimiento                                # panel de todos los alumnos
 ```
 
 Requisitos locales: TeX Live 2023 o posterior (o MacTeX / MiKTeX) con `latexmk` y `biber`. Para las figuras, Python 3.10 o posterior y `pip install -r scripts/requirements.txt`.
@@ -53,7 +57,7 @@ memoria/
 presentacion/              seguimiento.tex, defensa.tex, estilo.tex
 scripts/
   figuras/                 estilo.py + un script por figura
-  proyecto/                inicialización del proyecto e informe semanal
+  proyecto/                director.py (alta, tablero, seguimiento) e informe semanal
 .github/
   workflows/               compilar, inicializar-proyecto, informe-semanal
   proyecto/plan.yml        hitos, etiquetas e issues iniciales
