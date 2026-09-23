@@ -15,8 +15,11 @@ git worktree prune
 git worktree add --detach --quiet "$BASE" "$REV"
 trap 'git -C "$RAIZ" worktree remove --force "$BASE" >/dev/null 2>&1 || rm -rf "$BASE"' EXIT
 
+# Cada versión se "aplana" (\input/\include resueltos) desde su propio
+# directorio; latexdiff --flatten resolvería ambas contra el directorio actual.
+(cd "$BASE/memoria" && latexpand main.tex > "$BASE/antigua.tex")
 cd memoria
-latexdiff --flatten --math-markup=whole \
-  "$BASE/memoria/main.tex" main.tex > diff.tex
+latexpand main.tex > "$BASE/nueva.tex"
+latexdiff --math-markup=whole "$BASE/antigua.tex" "$BASE/nueva.tex" > diff.tex
 latexmk diff.tex
 echo "PDF de cambios: memoria/diff.pdf (respecto a $REV)"
