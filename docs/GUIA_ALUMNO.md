@@ -83,7 +83,7 @@ Lee el [flujo de trabajo](FLUJO_DE_TRABAJO.md). En resumen:
 
 1. Coge un issue del tablero y muévelo a *In progress*.
 2. Trabaja en una rama (`cap2-estado-arte`) con commits pequeños.
-3. Abre un **pull request** cuando quieras revisión. La CI adjunta el PDF con tus cambios marcados.
+3. Abre un **pull request** cuando quieras revisión. La CI comenta con enlaces a la memoria y a un PDF con tus cambios marcados.
 4. Tras la revisión, *merge* a `main`. El PDF de *Releases → Borrador* se actualiza solo.
 5. En cada hito importante crea una etiqueta (`v0.3-seguimiento`, `v0.9-borrador`, `v1.0-entrega`) y se publicará una versión con sus PDF.
 

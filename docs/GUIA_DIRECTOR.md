@@ -102,9 +102,12 @@ El alumno responde debajo con qué ha hecho, qué hará y qué le bloquea.
 
 ## Revisar la memoria
 
-- **Pull requests**: el alumno abre un PR por capítulo o bloque de cambios. La CI comenta con estadísticas (páginas, palabras, `\pendiente{}` abiertos, referencias sin definir) y adjunta:
-  - el PDF completo;
-  - un **PDF de cambios** (latexdiff: lo nuevo en azul, lo eliminado en rojo tachado). Así no tienes que releer lo que ya revisaste.
+- **Pull requests**: el alumno abre un PR por capítulo o bloque de cambios. La CI deja un comentario con estadísticas (páginas, palabras, `\pendiente{}` abiertos, referencias sin definir) y enlaces que abren en el visor de GitHub, sin descargar nada:
+  - 🔍 el **PDF de cambios** (latexdiff: lo nuevo en azul, lo eliminado en rojo tachado). Así no tienes que releer lo que ya revisaste;
+  - 📄 la memoria completa;
+  - 🎞️ las presentaciones.
+
+  El comentario se actualiza con cada push al PR. Los PDF viven en la rama auxiliar `vistas-previas`, que se limpia sola al cerrar el PR.
 - Puedes comentar en tres sitios:
   - en líneas concretas del `.tex`, en la pestaña *Files changed*;
   - en el propio PDF (anótalo y súbelo al PR);
