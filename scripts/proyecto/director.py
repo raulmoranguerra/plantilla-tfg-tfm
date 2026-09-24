@@ -147,7 +147,7 @@ def anadir_issues(proyecto: dict, repo: str, propietario: str) -> int:
 def alta(a) -> None:
     propietario = usuario_actual()
     alumno = a.repo.split("/")[0]
-    print(f"Alta de {a.repo} (director: @{propietario})")
+    print(f"Alta de {a.repo} (director: @{propietario})", flush=True)
     cmd = [sys.executable, str(Path(__file__).with_name("inicializar.py")),
            "--inicio", a.inicio, "--semanas", str(a.semanas)]
     subprocess.run(cmd, check=True, env={**__import__("os").environ, "GITHUB_REPOSITORY": a.repo})
@@ -224,7 +224,8 @@ def seguimiento(a) -> None:
             except RuntimeError as e:
                 print(f"(no se pudo sincronizar el tablero de {repo}: {e.args[0].splitlines()[-1]})")
     print(f"Seguimiento a {date.today():%d/%m/%Y}\n")
-    print(f"{'Alumno':<34} {'Últ. commit':>11}  {'Hito actual':<38} {'Prog.':>5}  "
+    w = max(len("Alumno"), *(len(r) for r, _ in lista))
+    print(f"{'Alumno':<{w}} {'Últ. commit':>11}  {'Hito actual':<38} {'Prog.':>5}  "
           f"{'Bloq.':>5} {'Dudas':>5} {'PR':>3}  Versión")
     for repo, p in lista:
         e = estado(repo)
@@ -243,11 +244,11 @@ def seguimiento(a) -> None:
             alertas.append("⏰ vencido: " + ", ".join(x["title"] for x in e["vencidos"]))
         if e["bloqueos"]:
             alertas.append(f"🛑 {e['bloqueos']} bloqueo(s)")
-        print(f"{repo:<34} {dias:>11}  {nombre[:38]:<38} {prog:>5}  "
+        print(f"{repo:<{w}} {dias:>11}  {nombre[:38]:<38} {prog:>5}  "
               f"{e['bloqueos']:>5} {e['dudas']:>5} {e['prs']:>3}  {e['version']}")
         for x in alertas:
-            print(f"{'':<36}{x}")
-        print(f"{'':<36}{p['url']}")
+            print(f"{'':<{w + 2}}{x}")
+        print(f"{'':<{w + 2}}{p['url']}")
 
 
 def main() -> None:

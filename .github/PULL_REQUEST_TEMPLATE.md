@@ -2,7 +2,7 @@
 
 <!-- Capítulo(s) o secciones afectados y un resumen de los cambios. -->
 
-Cierra #
+Closes #   <!-- número del issue; la palabra tiene que ser en inglés (Closes, Fixes o Resolves) -->
 
 ## Qué necesito del director
 

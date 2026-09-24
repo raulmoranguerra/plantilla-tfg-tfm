@@ -4,7 +4,7 @@
 
 - `main` siempre compila. Es la versión que ve el director en *Releases → Borrador*.
 - Trabaja cada tarea en una rama con un nombre descriptivo: `cap2-estado-arte`, `figuras-resultados`, `correcciones-cap4`.
-- Abre un **pull request** (PR) cuando quieras revisión. Si aún no está listo, ábrelo como *Draft*. Escribe `Cierra #12` en la descripción para cerrar el issue al hacer *merge*.
+- Abre un **pull request** (PR) cuando quieras revisión. Si aún no está listo, ábrelo como *Draft*. Escribe `Closes #12` en la descripción para cerrar el issue al hacer *merge* (GitHub solo reconoce la palabra en inglés: `Closes`, `Fixes` o `Resolves`).
 - La CI compila el PR y comenta con estadísticas y enlaces para ver en el navegador la memoria y un **PDF con los cambios marcados**. Revísalo tú antes que el director.
 - Tras la aprobación: **Squash and merge** y borra la rama.
 
