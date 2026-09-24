@@ -1,6 +1,7 @@
 # Compila la memoria y las presentaciones en cada push y pull request.
 #  - push a main       -> actualiza la release "borrador" con el último PDF
-#  - pull request      -> PDF con los cambios marcados + comentario con estadísticas
+#  - pull request      -> comentario con enlaces para ver en GitHub la memoria, el
+#                         PDF con los cambios marcados y las presentaciones
 #  - etiqueta v*       -> release con los PDF de entrega (v0.* = prerelease)
 name: Compilar
 
@@ -16,6 +17,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  issues: write
 
 concurrency:
   group: compilar-${{ github.ref }}
@@ -72,7 +74,9 @@ jobs:
           { echo "## 📄 Estado de la memoria"; echo; cat estadisticas.md; } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Preparar entregables
-        run: make entregables
+        run: |
+          make entregables
+          cp estadisticas.md dist/
 
       - uses: actions/upload-artifact@v7
         with:
@@ -80,25 +84,57 @@ jobs:
           path: dist/
           retention-days: 30
 
+  vista-previa:
+    name: Vista previa en el PR
+    needs: compilar
+    # En PR desde forks el token es de solo lectura: no se puede publicar
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    concurrency:
+      group: vistas-previas     # una sola escritura a la vez en la rama
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          sparse-checkout: scripts
+
+      - uses: actions/download-artifact@v8
+        with:
+          name: pdf
+          path: dist
+
+      - name: Publicar los PDF en la rama vistas-previas
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: scripts/vistas_previas.sh publicar ${{ github.event.pull_request.number }} dist
+
       - name: Comentar en el pull request
-        if: github.event_name == 'pull_request'
-        continue-on-error: true   # en PR desde forks el token es de solo lectura
         uses: actions/github-script@v9
         with:
           script: |
             const fs = require('fs');
             const marca = '<!-- compilar-bot -->';
-            const run = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
-            const body = `${marca}\n### 📄 Memoria compilada\n\n${fs.readFileSync('estadisticas.md', 'utf8')}\n` +
-              `Descarga los PDF (memoria, presentaciones y **PDF con los cambios marcados**) en los ` +
-              `[artefactos de la ejecución](${run}#artifacts).`;
-            const { data: comentarios } = await github.rest.issues.listComments({
-              ...context.repo, issue_number: context.issue.number });
+            const pr = context.issue.number;
+            const base = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}`;
+            const ver = f => `${base}/blob/vistas-previas/pr-${pr}/${f}`;
+            const hay = p => fs.readdirSync('dist').some(f => f.startsWith(p));
+            const sha = context.payload.pull_request.head.sha.slice(0, 7);
+            const enlaces = [];
+            if (hay('Cambios_')) enlaces.push(`🔍 **[Cambios marcados](${ver('cambios.pdf')})** (lo nuevo en azul, lo eliminado en rojo)`);
+            enlaces.push(`📄 [Memoria completa](${ver('memoria.pdf')})`);
+            if (hay('Presentacion_seguimiento_')) enlaces.push(`🎞️ [Presentación de seguimiento](${ver('presentacion-seguimiento.pdf')})`);
+            if (hay('Presentacion_defensa_')) enlaces.push(`🎤 [Presentación de defensa](${ver('presentacion-defensa.pdf')})`);
+            const body = `${marca}\n### 📄 Memoria compilada · \`${sha}\`\n\n` +
+              enlaces.map(e => `- ${e}`).join('\n') + '\n\n' +
+              fs.readFileSync('dist/estadisticas.md', 'utf8') +
+              `\n<sub>Los enlaces se abren en el visor de GitHub y se actualizan con cada push al PR. ` +
+              `También puedes descargarlos de los [artefactos](${base}/actions/runs/${context.runId}#artifacts).</sub>`;
+            const { data: comentarios } = await github.rest.issues.listComments({ ...context.repo, issue_number: pr });
             const previo = comentarios.find(c => c.body.includes(marca));
             if (previo) {
               await github.rest.issues.updateComment({ ...context.repo, comment_id: previo.id, body });
             } else {
-              await github.rest.issues.createComment({ ...context.repo, issue_number: context.issue.number, body });
+              await github.rest.issues.createComment({ ...context.repo, issue_number: pr, body });
             }
 
   publicar:

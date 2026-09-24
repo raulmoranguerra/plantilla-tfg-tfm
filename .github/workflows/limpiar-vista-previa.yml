@@ -1,0 +1,26 @@
+# Al cerrar o fusionar un pull request, borra sus PDF de la rama vistas-previas.
+name: Limpiar vista previa
+
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: vistas-previas
+  cancel-in-progress: false
+
+jobs:
+  limpiar:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          sparse-checkout: scripts
+      - name: Borrar los PDF del PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: scripts/vistas_previas.sh borrar ${{ github.event.pull_request.number }}
